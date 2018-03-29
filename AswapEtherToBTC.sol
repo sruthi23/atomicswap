@@ -36,7 +36,13 @@ contract AswapEtherToBTC{
 	}
 
 	function participate(address _initiator, bytes32 _hashedsecret, uint _refundtime) payable {
-		
+
+		swaps[_hashedsecret].initiator = _initiator;
+		swaps[_hashedsecret].participant = msg.sender;
+		swaps[_hashedsecret].value = msg.value;
+		swaps[_hashedsecret].hashedsecret = _hashedsecret;
+		swaps[_hashedsecret].inittime = block.timestamp;
+		swaps[_hashedsecret].refundtime = _refundtime;
 		owner.transfer(msg.value);
 	}
 
