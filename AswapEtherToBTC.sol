@@ -12,6 +12,7 @@ contract AswapEtherToBTC{
 		bytes32 hashedsecret;
 		uint inittime;
 		uint refundtime;
+		bool emptied;
 
 	}                                                                                                                                        
 
@@ -72,19 +73,15 @@ contract AswapEtherToBTC{
 		swaps[_hashedsecret].participant.transfer(swaps[_hashedsecret].value)
 	}
 
-	/* function auditContract() isParticipant {
-        
-         
-		} */
-
-		function refund(bytes32 _hashedsecret){
-			require(block.timestamp > refundtime);
-			require(swaps[_hashedsecret].initiator == msg.sender);
-			swaps[_hashedsecret].initiator.transfer(swaps[_hashedsecret].value);
-
-		}
-
-		function () payable public{}
-
+	
+	function refund(bytes32 _hashedsecret){
+		require(block.timestamp > refundtime);
+		require(swaps[_hashedsecret].initiator == msg.sender);
+		swaps[_hashedsecret].initiator.transfer(swaps[_hashedsecret].value);
 
 	}
+
+	function () payable public{}
+
+
+}
