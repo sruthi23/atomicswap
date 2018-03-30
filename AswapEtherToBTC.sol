@@ -12,10 +12,19 @@ contract AswapEtherToBTC{
 		bytes32 hashedsecret;
 		uint inittime;
 		uint refundtime;
+
 	}                                                                                                                                        
 
 	address owner;
 	mapping(bytes32 => Swap) swaps;
+
+	event Initiated(address _initiator, 
+		address _participant,
+		uint refundtime,
+		bytes32 hashedsecret,
+		uint refundtime);
+
+
 
 	function AswapEtherToBTC(){
 
@@ -49,6 +58,11 @@ contract AswapEtherToBTC{
 	modifier isParticipant(bytes32 _hashedsecret){
 
 		require(swaps[_hashedsecret].participant == msg.sender);
+	}
+
+	modifier isInitiator(bytes32 _initaiator){
+
+		require(swaps[_hashedsecret].initiator == msg.sender);
 	}
 
 	function redeemFund(bytes32 _secret, bytes32 _hashedsecret){
