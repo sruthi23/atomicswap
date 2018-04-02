@@ -74,14 +74,14 @@ contract AswapEtherToBTC{
 		_;
 	}
 
-	function redeemFund(bytes32 _secret, bytes32 _hashedsecret) isParticipant(_hashedsecret) public{
+	function redeemFund(bytes32 _secret, bytes32 _hashedsecret) isParticipant(_hashedsecret) public payable{
 		require(block.timestamp < swaps[_hashedsecret].refundtime);
 		//require(swaps[_hashedsecret].participant == msg.sender);
 		require(keccak256(_secret) == _hashedsecret);
 		swaps[_hashedsecret].participant.transfer(swaps[_hashedsecret].value);
 	}
 
-	function refund(bytes32 _hashedsecret) isRefundable(_hashedsecret) public {
+	function refund(bytes32 _hashedsecret) isRefundable(_hashedsecret) public payable{
 		//require(swaps[_hashedsecret].initiator == msg.sender);
 		swaps[_hashedsecret].emptied = true;
 		swaps[_hashedsecret].initiator.transfer(swaps[_hashedsecret].value);
