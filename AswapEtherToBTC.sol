@@ -68,7 +68,7 @@ contract AswapEtherToBTC{
 		_;
 	}
 
-	modifier isRefundable(bytes32 _hashedsecret) isInitiator{
+	modifier isRefundable(bytes32 _hashedsecret) {
 		require(block.timestamp > swaps[_hashedsecret].refundtime);
 		require(swaps[_hashedsecret].emptied = false);
 		_;
