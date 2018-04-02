@@ -56,14 +56,7 @@ contract AswapEtherToBTC{
 		owner.transfer(msg.value);
 	}
 
-	modifier isParticipant(bytes32 _hashedsecret){
-
-		require(swaps[_hashedsecret].participant == msg.sender);
-		_;
-	}
-
 	
-
 	modifier isRefundable(bytes32 _hashedsecret) {
 		require(swaps[_hashedsecret].initiator == msg.sender);
 		require(block.timestamp > swaps[_hashedsecret].refundtime);
