@@ -72,8 +72,6 @@ contract AswapEtherToBTC{
 	}
 
 	function redeemFund(bytes32 _secret, bytes32 _hashedsecret) isRedeemable(_hashedsecret) public payable{
-		require(block.timestamp < swaps[_hashedsecret].refundtime);
-		//require(swaps[_hashedsecret].participant == msg.sender);
 		require(keccak256(_secret) == _hashedsecret);
 		swaps[_hashedsecret].participant.transfer(swaps[_hashedsecret].value);
 	}
