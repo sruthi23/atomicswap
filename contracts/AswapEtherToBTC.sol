@@ -62,11 +62,7 @@ contract AswapEtherToBTC{
 		_;
 	}
 
-	modifier isInitiator(bytes32 _hashedsecret){
-
-		require(swaps[_hashedsecret].initiator == msg.sender);
-		_;
-	}
+	
 
 	modifier isRefundable(bytes32 _hashedsecret) {
 		require(swaps[_hashedsecret].initiator == msg.sender);
