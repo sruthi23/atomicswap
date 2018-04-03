@@ -84,9 +84,9 @@ contract AswapEtherToBTC{
 	}
 
 	function refund(bytes32 _hashedsecret) isRefundable(_hashedsecret) public payable{
-		//require(swaps[_hashedsecret].initiator == msg.sender);
+		require(swaps[_hashedsecret].value == msg.value);
 		swaps[_hashedsecret].emptied = true;
-		swaps[_hashedsecret].initiator.transfer(swaps[_hashedsecret].value);
+		swaps[_hashedsecret].initiator.transfer(msg.value);
 
 	}
 
