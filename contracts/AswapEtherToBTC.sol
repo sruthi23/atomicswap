@@ -24,7 +24,10 @@ contract AswapEtherToBTC{
 		bytes32 _hashedsecret,
 		uint _refundtime);
 
-	event RedeemEvent(address _msender);
+	event RedeemEvent(address _msender, 
+		uint256 _mvalue, 
+		bytes32 _secret, 
+		bytes32 _hashedsecret);
 	
 	function AswapEtherToBTC() public{
 
@@ -74,8 +77,9 @@ contract AswapEtherToBTC{
 
 	function redeemFund(bytes32 _secret, bytes32 _hashedsecret) isRedeemable(_hashedsecret) public payable{
 		require(keccak256(_secret) == _hashedsecret);
+		require(swaps[_hashedsecret].value == msg.value);
 		swaps[_hashedsecret].emptied = true;
-		RedeemEvent(msg.sender);
+		RedeemEvent(msg.sender,msg.value,_secret,_hashedsecret);
 		swaps[_hashedsecret].participant.transfer(msg.value);
 	}
 
