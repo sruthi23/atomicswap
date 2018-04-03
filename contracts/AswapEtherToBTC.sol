@@ -24,8 +24,8 @@ contract AswapEtherToBTC{
 		bytes32 _hashedsecret,
 		uint _refundtime);
 
-
-
+	event RedeemEvent(address _msender);
+	
 	function AswapEtherToBTC() public{
 
 		owner = msg.sender;
@@ -41,6 +41,7 @@ contract AswapEtherToBTC{
 		swaps[_hashedsecret].hashedsecret = _hashedsecret;
 		swaps[_hashedsecret].inittime = block.timestamp;
 		swaps[_hashedsecret].refundtime = _refundtime;
+		swaps[_hashedsecret].emptied = false;
 		owner.transfer(msg.value);
 		Initiated(msg.sender,_participant,_hashedsecret,_refundtime);
 	}
@@ -59,7 +60,7 @@ contract AswapEtherToBTC{
 	modifier isRefundable(bytes32 _hashedsecret) {
 		require(swaps[_hashedsecret].initiator == msg.sender);
 		require(block.timestamp > swaps[_hashedsecret].refundtime);
-		require(swaps[_hashedsecret].emptied = false);
+		require(swaps[_hashedsecret].emptied == false);
 		_;
 	}
 
@@ -67,13 +68,15 @@ contract AswapEtherToBTC{
 
 		require(swaps[_hashedsecret].participant == msg.sender);
 		require(block.timestamp <= swaps[_hashedsecret].refundtime);
-		require(swaps[_hashedsecret].emptied = false);
+		require(swaps[_hashedsecret].emptied == false);
 		_;
 	}
 
 	function redeemFund(bytes32 _secret, bytes32 _hashedsecret) isRedeemable(_hashedsecret) public payable{
 		require(keccak256(_secret) == _hashedsecret);
-		swaps[_hashedsecret].participant.transfer(swaps[_hashedsecret].value);
+		swaps[_hashedsecret].emptied = true;
+		RedeemEvent(msg.sender);
+		swaps[_hashedsecret].participant.transfer(msg.value);
 	}
 
 	function refund(bytes32 _hashedsecret) isRefundable(_hashedsecret) public payable{
