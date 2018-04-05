@@ -26,7 +26,7 @@ contract AswapEtherToBTC{
 
 	event Participate(address _participant,
 		address _initiator,
-		address _hashedsecret,
+		bytes32 _hashedsecret,
 		uint _refundtime);
 
 	event RedeemEvent(address _msender, 
@@ -67,7 +67,7 @@ contract AswapEtherToBTC{
 		swaps[_hashedsecret].inittime = block.timestamp;
 		swaps[_hashedsecret].refundtime = _refundtime;
 		owner.transfer(msg.value);
-		Participate(msg.sender,_initiator,_hashedsecret,refundtime);
+		Participate(msg.sender,_initiator, _hashedsecret,_refundtime);
 	}
 	
 	modifier isRefundable(bytes32 _hashedsecret) {
