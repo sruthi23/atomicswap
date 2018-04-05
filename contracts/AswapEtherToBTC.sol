@@ -16,12 +16,17 @@ contract AswapEtherToBTC{
 
 	}                                                                                                                                        
 
-	address owner;
+	address public owner;
 	mapping(bytes32 => Swap) swaps;
 
 	event Initiated(address _initiator, 
 		address _participant,
 		bytes32 _hashedsecret,
+		uint _refundtime);
+
+	event Participate(address _participant,
+		address _initiator,
+		address _hashedsecret,
 		uint _refundtime);
 
 	event RedeemEvent(address _msender, 
@@ -35,6 +40,7 @@ contract AswapEtherToBTC{
 	function AswapEtherToBTC() public{
 
 		owner = msg.sender;
+		
 	}
 
 	function initiateSwap(address _participant, bytes32 _secret,uint _refundtime) public payable{
@@ -61,6 +67,7 @@ contract AswapEtherToBTC{
 		swaps[_hashedsecret].inittime = block.timestamp;
 		swaps[_hashedsecret].refundtime = _refundtime;
 		owner.transfer(msg.value);
+		Participate(msg.sender,_initiator,_hashedsecret,refundtime);
 	}
 	
 	modifier isRefundable(bytes32 _hashedsecret) {
